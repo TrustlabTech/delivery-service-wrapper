@@ -12,9 +12,9 @@ const token_address = require('./contracts/Token.address'),
       registry_address = require('./contracts/Registry.address'),
       delivery_service_address = require('./contracts/DeliveryService.address')
 
-module.exports = function(geth_host) {
+module.exports = function(provider) {
 
-  const web3 = new Web3(new Web3.providers.HttpProvider(geth_host))
+  const web3 = typeof provider === 'string' ? new Web3(new Web3.providers.HttpProvider(provider)) : provider
 
   const tokenInterface = web3.eth.contract(token_abi),
         registryInterface = web3.eth.contract(registry_abi),
