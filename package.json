@@ -1,5 +1,5 @@
 {
-  "name": "ecd-delivery-service-wrapper",
+  "name": "delivery-service-wrapper",
   "version": "1.0.0",
   "description": "Wrapper around Delivery Service Smart Contract",
   "main": "index.js",
