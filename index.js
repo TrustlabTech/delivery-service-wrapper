@@ -92,7 +92,7 @@ module.exports = function(provider) {
           return new_task(txhash, callback)
         })
       })
-    }
+    },
 
     execute: function(to, value, vchash, senderPrivateKey, callback) {
       const calldata = DeliveryService.execute.getData(to, value, vchash)
@@ -124,7 +124,7 @@ module.exports = function(provider) {
           return new_task(txhash, callback)
         })
       })
-    }
+    },
 
     confirm: function(vchash, senderPrivateKey, callback) {
       const calldata = DeliveryService.confirm.getData(vchash)
