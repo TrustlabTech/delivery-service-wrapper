@@ -1,14 +1,16 @@
 'use-strict'
 
-const Web3 = require('web3')
+const Web3 = require('web3'),      
+      Tx = require('ethereumjs-tx'),
+      ut = require('ethereumjs-util')
 
-const token_abi = require('./contracts/Token.abi')
-const registry_abi = require('./contracts/Registry.abi')
-const delivery_service_abi = require('./contracts/DeliveryService.abi')
+const token_abi = require('./contracts/Token.abi'),
+      registry_abi = require('./contracts/Registry.abi'),
+      delivery_service_abi = require('./contracts/DeliveryService.abi')
 
-const token_address = require('./contracts/Token.address')
-const registry_address = require('./contracts/Registry.address')
-const delivery_service_address = require('./contracts/DeliveryService.address')
+const token_address = require('./contracts/Token.address'),
+      registry_address = require('./contracts/Registry.address'),
+      delivery_service_address = require('./contracts/DeliveryService.address')
 
 module.exports = function(geth_host) {
 
@@ -51,10 +53,101 @@ module.exports = function(geth_host) {
 
   return {
 
-    record: function(vchash, date, centreDID, attendees, claimedTokens, centreAddress) {
+    record: function(vchash, date, centreDID, attendees, claimedTokens, senderPrivateKey, callback) {
+      
+      const calldata = Registry.record.getData(vchash, date, centreDID, attendees, claimedTokens)
+      
+      const signer_buf = Buffer.from(senderPrivateKey, 'hex'),
+          signer_addr = `0x${ut.privateToAddress(signer_buf).toString('hex')}`
+
+      web3.eth.getTransactionCount(signer_addr, (err, nonce) => {
+        
+        if (err)
+          return callback(err)
+
+        const transaction = new Tx({
+          to: registry_address,
+          gasLimit: 3000000,
+          gasPrice: +web3.toWei(20, 'gwei'),
+          nonce: nonce,
+          data: calldata,
+        })
+
+        transaction.sign(signer_buf)
+        
+        const raw = `0x${transaction.serialize().toString('hex')}`
+
+        return web3.eth.sendRawTransaction(raw, function(error, txhash) {
+          if (error)
+            return callback(error)
+          
+          return new_task(txhash, callback)
+        })
+      })
     }
 
-    execute: function(to, value, vchash) {
+    execute: function(to, value, vchash, senderPrivateKey, callback) {
+      const calldata = DeliveryService.execute.getData(to, value, vchash)
+      
+      const signer_buf = Buffer.from(senderPrivateKey, 'hex'),
+            signer_addr = `0x${ut.privateToAddress(signer_buf).toString('hex')}`
+
+      web3.eth.getTransactionCount(signer_addr, (err, nonce) => {
+        
+        if (err)
+          return callback(err)
+
+        const transaction = new Tx({
+          to: delivery_service_address,
+          gasLimit: 4000000,
+          gasPrice: +web3.toWei(20, 'gwei'),
+          nonce: nonce,
+          data: calldata,
+        })
+
+        transaction.sign(signer_buf)
+        
+        const raw = `0x${transaction.serialize().toString('hex')}`
+
+        return web3.eth.sendRawTransaction(raw, function(error, txhash) {
+          if (error)
+            return callback(error)
+          
+          return new_task(txhash, callback)
+        })
+      })
+    }
+
+    confirm: function(vchash, senderPrivateKey, callback) {
+      const calldata = DeliveryService.confirm.getData(vchash)
+      
+      const signer_buf = Buffer.from(senderPrivateKey, 'hex'),
+            signer_addr = `0x${ut.privateToAddress(signer_buf).toString('hex')}`
+
+      web3.eth.getTransactionCount(signer_addr, (err, nonce) => {
+        
+        if (err)
+          return callback(err)
+
+        const transaction = new Tx({
+          to: delivery_service_address,
+          gasLimit: 4000000,
+          gasPrice: +web3.toWei(20, 'gwei'),
+          nonce: nonce,
+          data: calldata,
+        })
+
+        transaction.sign(signer_buf)
+        
+        const raw = `0x${transaction.serialize().toString('hex')}`
+
+        return web3.eth.sendRawTransaction(raw, function(error, txhash) {
+          if (error)
+            return callback(error)
+          
+          return new_task(txhash, callback)
+        })
+      })
     }
 
   }
