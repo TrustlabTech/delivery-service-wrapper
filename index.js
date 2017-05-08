@@ -14,6 +14,14 @@ const token_address = require('./contracts/Token.address'),
 
 module.exports = function(provider) {
 
+  var tasks = {}
+  var task_timer = setInterval(function() {
+    var tx_hashes = Object.keys(tasks)
+    for (var i = tx_hashes.length - 1; i >= 0; i--) {
+      tasks[tx_hashes[i]].task()
+    }
+  }, 10 * 1000)
+
   const web3 = typeof provider === 'string' ? new Web3(new Web3.providers.HttpProvider(provider)) : provider
 
   const tokenInterface = web3.eth.contract(token_abi),
