@@ -1,0 +1,14 @@
+{
+  "name": "ecd-delivery-service-wrapper",
+  "version": "1.0.0",
+  "description": "Wrapper around Delivery Service Smart Contract",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alberto Dallaporta (alberto@novalab.io)",
+  "license": "MIT",
+  "dependencies": {
+    "web3": "^0.18.4"
+  }
+}
