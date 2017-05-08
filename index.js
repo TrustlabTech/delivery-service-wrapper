@@ -12,7 +12,7 @@ const token_address = require('./contracts/Token.address'),
       registry_address = require('./contracts/Registry.address'),
       delivery_service_address = require('./contracts/DeliveryService.address')
 
-module.exports = function(provider) {
+module.exports = function(provider, verbose) {
 
   var tasks = {}
   var task_timer = setInterval(function() {
@@ -89,7 +89,7 @@ module.exports = function(provider) {
           if (error)
             return callback(error)
           
-          return new_task(txhash, callback)
+          return verbose ? new_task(txhash, callback) : callback(error, txhash)
         })
       })
     },
@@ -121,7 +121,7 @@ module.exports = function(provider) {
           if (error)
             return callback(error)
           
-          return new_task(txhash, callback)
+          return verbose ? new_task(txhash, callback) : callback(error, txhash)
         })
       })
     },
@@ -153,7 +153,7 @@ module.exports = function(provider) {
           if (error)
             return callback(error)
           
-          return new_task(txhash, callback)
+          return verbose ? new_task(txhash, callback) : callback(error, txhash)
         })
       })
     }
