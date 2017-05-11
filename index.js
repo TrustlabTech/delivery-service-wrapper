@@ -67,7 +67,7 @@ module.exports = function(provider, verbose) {
       const _date = new Buffer(date, 'utf8').toString('hex'),
             _centreDID = new Buffer(centreDID, 'utf8').toString('hex')
           
-      const calldata = Registry.record.getData(vchash, _date, _centreDID, attendees, claimedTokens)
+      const calldata = Registry.record(vchash, _date, _centreDID, attendees, claimedTokens)
       
       const signer_buf = Buffer.from(senderPrivateKey, 'hex'),
           signer_addr = `0x${ut.privateToAddress(signer_buf).toString('hex')}`
