@@ -61,13 +61,13 @@ module.exports = function(provider, verbose) {
 
   return {
 
-    record: function(vchash, date, centreDID, attendees, claimedTokens, senderPrivateKey, callback) {
+    record: function(vchash, date, centreDID, unitCode, senderPrivateKey, callback) {
       
       // encode strings
       const _date = new Buffer(date, 'utf8').toString('hex'),
             _centreDID = new Buffer(centreDID, 'utf8').toString('hex')
           
-      const calldata = Registry.record(vchash, _date, _centreDID, attendees, claimedTokens)
+      const calldata = Registry.record(vchash, _date, _centreDID, unitCode)
       
       const signer_buf = Buffer.from(senderPrivateKey, 'hex'),
           signer_addr = `0x${ut.privateToAddress(signer_buf).toString('hex')}`
