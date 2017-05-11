@@ -12,5 +12,4 @@
 ## License
 
 Copyright (c) 2017 Trustlab Pty Ltd, under licence from Global Consent Limited
-See our [License](https://github.com/TrustlabTech/ecd-service-delivery/blob/master/LICENSE.md).
-
+See our [License](https://github.com/TrustlabTech/delivery-service-wrapper/blob/master/LICENSE.md).
