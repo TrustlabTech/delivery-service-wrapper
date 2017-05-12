@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/TrustlabTech/delivery-service-wrapper.png?label=ready&title=Ready)](https://waffle.io/TrustlabTech/delivery-service-wrapper?utm_source=badge)
 # Wrapper around Service Delivery Smart Contract
 
 ## Abstract
