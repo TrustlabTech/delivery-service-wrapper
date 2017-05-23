@@ -62,7 +62,7 @@ module.exports = function(provider, verbose) {
   return {
 
     record: function(vchash, date, centreDID, unitCode, senderPrivateKey, callback) {
-      const calldata = Registry.record.getData(unitCode, web3.toHex(date), vchash, web3.toHex(centreDID))
+      const calldata = Registry.record.getData(unitCode, date, vchash, centreDID)
       
       const signer_buf = Buffer.from(senderPrivateKey, 'hex'),
             signer_addr = `0x${ut.privateToAddress(signer_buf).toString('hex')}`
@@ -74,7 +74,7 @@ module.exports = function(provider, verbose) {
 
         const transaction = new Tx({
           to: registry_address,
-          gasLimit: 3000000,
+          gasLimit: 500000,
           gasPrice: +web3.toWei(20, 'gwei'),
           nonce: nonce,
           data: calldata,
