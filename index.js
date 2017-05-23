@@ -61,8 +61,8 @@ module.exports = function(provider, verbose) {
 
   return {
 
-    record: function(vchash, date, centreDID, unitCode, senderPrivateKey, callback) {
-      const calldata = Registry.record.getData(unitCode, date, vchash, centreDID)
+    record: function(vchash, timestamp, centreDID, unitCode, senderPrivateKey, callback) {
+      const calldata = Registry.record.getData(vchash, timestamp, unitCode, centreDID)
       
       const signer_buf = Buffer.from(senderPrivateKey, 'hex'),
             signer_addr = `0x${ut.privateToAddress(signer_buf).toString('hex')}`
